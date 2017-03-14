@@ -15,17 +15,17 @@ s = sobamchan_slack.Slack
 util = sobamchan_utility.Utility()
 
 
-def train(epoch=10, batch_size=128, embedding_size=16, class_n=10):
+def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014):
+
     test_ratio = .2
-    
+
     # fake dataset
     # vocab_n = 100
-    # X = np.random.randint(vocab_n, size=(1000, 1, 1024)).astype(np.int32)
+    # X = np.random.randint(vocab_n, size=(1000, 1, maxlen)).astype(np.int32)
     # T = np.random.randint(10, size=(1000)).astype(np.int32)
     # train_x, test_x = X[:int(len(X)*(1-test_ratio))], X[-int(len(X)*test_ratio):]
     # train_t, test_t = T[:int(len(T)*(1-test_ratio))], T[-int(len(T)*test_ratio):]
 
-    maxlen = 1014
     vocab_n = len(token_dict)
     ag = AGCorpus('./datas/newsspace200.xml')
     T, X = ag.get_data()
@@ -38,7 +38,7 @@ def train(epoch=10, batch_size=128, embedding_size=16, class_n=10):
     train_n = len(train_x)
     test_n = len(test_x)
 
-    model = VDCNN(len(token_dict), embedding_size, class_n)
+    model = VDCNN(vocab_n, embedding_size, class_n)
     optimizer = optimizers.MomentumSGD()
     optimizer.setup(model)
 
