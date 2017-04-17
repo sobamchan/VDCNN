@@ -15,7 +15,7 @@ s = sobamchan_slack.Slack
 util = sobamchan_utility.Utility()
 
 
-def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014):
+def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014, gpu=0):
 
     test_ratio = .2
 
@@ -39,6 +39,13 @@ def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014):
     test_n = len(test_x)
 
     model = VDCNN(vocab_n, embedding_size, class_n)
+
+    if gpu > 0:
+        chainer.cuda.get_device(gpu).use()
+        model.to_gpu()
+        xp = chainer.cuda.cupy
+    xp = np
+
     optimizer = optimizers.MomentumSGD()
     optimizer.setup(model)
 
@@ -56,8 +63,8 @@ def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014):
         train_iter_x = Iterator(train_x, batch_size, order=order)
         train_iter_t = Iterator(train_t, batch_size, order=order)
         for x, t in tqdm(zip(train_iter_x, train_iter_t)):
-            x = model.prepare_input(x, np.int32)
-            t = model.prepare_input(t, np.int32)
+            x = model.prepare_input(x, dtype=xp.int32, xp=xp)
+            t = model.prepare_input(t, dtype=xp.int32, xp=xp)
             loss = model(x, t)
             loss.backward()
             optimizer.update()
@@ -67,8 +74,8 @@ def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014):
         test_iter_x = Iterator(test_x, batch_size, order=order)
         test_iter_t = Iterator(test_t, batch_size, order=order)
         for x, t in tqdm(zip(test_iter_x, test_iter_t)):
-            x = model.prepare_input(x, np.int32)
-            t = model.prepare_input(t, np.int32)
+            x = model.prepare_input(x, dtype=xp.int32, xp=xp)
+            t = model.prepare_input(t, dtype=xp.int32, xp=xp)
             loss = model(x, t)
             loss_acc += float(loss.data)
         print('test loss: {}'.format(loss_acc/test_n/batch_size))
