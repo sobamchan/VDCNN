@@ -1,5 +1,5 @@
 import numpy as np
-import sobamchan_chainer
+from sobamchan import sobamchan_chainer
 import chainer.links as L
 import chainer.functions as F
 from chainer import Variable
