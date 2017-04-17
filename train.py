@@ -1,4 +1,5 @@
 import numpy as np
+import chainer
 from chainer import optimizers
 import fire
 from tqdm import tqdm
