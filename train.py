@@ -16,7 +16,7 @@ s = sobamchan_slack.Slack
 util = sobamchan_utility.Utility()
 
 
-def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014, gpu=0):
+def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014, gpu=None):
 
     test_ratio = .2
 
@@ -41,7 +41,7 @@ def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014, 
 
     model = VDCNN(vocab_n, embedding_size, class_n)
 
-    if gpu > 0:
+    if gpu:
         chainer.cuda.get_device(gpu).use()
         model.to_gpu()
         xp = chainer.cuda.cupy
