@@ -45,7 +45,8 @@ def train(epoch=10, batch_size=128, embedding_size=16, class_n=10, maxlen=1014, 
         chainer.cuda.get_device(gpu).use()
         model.to_gpu()
         xp = chainer.cuda.cupy
-    xp = np
+    else:
+        xp = np
 
     optimizer = optimizers.MomentumSGD()
     optimizer.setup(model)
