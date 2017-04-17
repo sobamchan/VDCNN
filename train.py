@@ -6,11 +6,11 @@ import sys
 
 from model import VDCNN
 
-from sobamchan_iterator import Iterator
-from sobamchan_dataset import AGCorpus
+from sobamchan.sobamchan_iterator import Iterator
+from sobamchan.sobamchan_dataset import AGCorpus
 from token_dict.basic import token_dict
-import sobamchan_utility
-import sobamchan_slack
+from sobamchan import sobamchan_utility
+from sobamchan import sobamchan_slack
 s = sobamchan_slack.Slack
 util = sobamchan_utility.Utility()
 
