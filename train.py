@@ -8,7 +8,7 @@ from model import VDCNN
 
 from sobamchan.sobamchan_iterator import Iterator
 from sobamchan.sobamchan_dataset import AGCorpus
-from token_dict.basic import token_dict
+from sobamchan.token_dict.basic import token_dict
 from sobamchan import sobamchan_utility
 from sobamchan import sobamchan_slack
 s = sobamchan_slack.Slack
